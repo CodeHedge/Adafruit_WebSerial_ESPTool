@@ -391,7 +391,7 @@ async function clickProgram() {
     const modelFilesMap = {
     "CYD": MCYDlatestFiles,
     "CYDNOGPS": MCYDNOGPSlatestFiles,
-    "CYD2USB": MCYD2USBlatestFiles,
+    "CYD2USB": {"latest":MCYD2USBlatestFiles,"previous":MCYD2USBNOGPSPreviousFiles},
     "CYD2USBNOGPS": MCYD2USBNOGPSlatestFiles,
     "CYD24NOGPS": MCYD24NOGPSlatestFiles,
     "CYD24GPS": MCYD24GPSlatestFiles,
