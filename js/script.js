@@ -366,7 +366,7 @@ async function clickErase() {
 
 async function clickProgram() {
     console.log('MCYD2USBNOGPSlatestFiles:', MCYD2USBNOGPSlatestFiles);
-    console.log('MCYD2USBNOGPSpreviousFiles:', MCYD2USBNOGPSpreviousFiles);
+    console.log('MCYD2USBNOGPSPreviousFiles:', MCYD2USBNOGPSPreviousFiles);
     const readUploadedFileAsArrayBuffer = (inputFile) => {
         const reader = new FileReader();
 
@@ -402,7 +402,7 @@ async function clickProgram() {
         },
         "CYD2USBNOGPS": {
             "latest": MCYD2USBNOGPSlatestFiles,
-            "previous": MCYD2USBNOGPSpreviousFiles
+            "previous": MCYD2USBNOGPSPreviousFiles
         },
         "CYD24NOGPS": {
             "latest": MCYD24NOGPSlatestFiles
