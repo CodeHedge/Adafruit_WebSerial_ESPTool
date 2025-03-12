@@ -380,42 +380,74 @@ async function clickProgram() {
             reader.readAsArrayBuffer(inputFile);
         });
     };
-     const selectedModel = modelSelect.value;
-     const selectedVersion = versionSelect.value;
-    //const selectedVariant = variantSelect.value;
-     const progressBarDialog = createProgressBarDialog();
-     const progress = document.getElementById("progress"); 
+
+    const selectedModel = modelSelect.value;
+    const selectedVersion = versionSelect.value;
+    const progressBarDialog = createProgressBarDialog();
+    const progress = document.getElementById("progress");
 
     let selectedFiles;
 
     const modelFilesMap = {
-    "CYD": MCYDlatestFiles,
-    "CYDNOGPS": MCYDNOGPSlatestFiles,
-    "CYD2USB": {"latest":MCYD2USBlatestFiles,"previous":MCYD2USBNOGPSPreviousFiles},
-    "CYD2USBNOGPS": MCYD2USBNOGPSlatestFiles,
-    "CYD24NOGPS": MCYD24NOGPSlatestFiles,
-    "CYD24GPS": MCYD24GPSlatestFiles,
-    "CYD24GNOGPS": MCYD24GNOGPSlatestFiles,
-    "CYD24GGPS": MCYD24GGPSlatestFiles,
-    "CYD35NOGPS": MCYD35NOGPSlatestFiles,
-    "CYD35GPS": MCYD35GPSlatestFiles,
-    "CYD32NOGPS": MCYD32NOGPSlatestFiles,
-    "CYD32GPS": MCYD32GPSlatestFiles
-};
+        "CYD": {
+            "latest": MCYDlatestFiles,
+            "previous": MCYDpreviousFiles
+        },
+        "CYDNOGPS": {
+            "latest": MCYDNOGPSlatestFiles,
+            "previous": MCYDNOGPSpreviousFiles
+        },
+        "CYD2USB": {
+            "latest": MCYD2USBlatestFiles,
+            "previous": MCYD2USBpreviousFiles
+        },
+        "CYD2USBNOGPS": {
+            "latest": MCYD2USBNOGPSlatestFiles,
+            "previous": MCYD2USBNOGPSpreviousFiles
+        },
+        "CYD24NOGPS": {
+            "latest": MCYD24NOGPSlatestFiles,
+            "previous": MCYD24NOGPSpreviousFiles
+        },
+        "CYD24GPS": {
+            "latest": MCYD24GPSlatestFiles,
+            "previous": MCYD24GPSpreviousFiles
+        },
+        "CYD24GNOGPS": {
+            "latest": MCYD24GNOGPSlatestFiles,
+            "previous": MCYD24GNOGPSpreviousFiles
+        },
+        "CYD24GGPS": {
+            "latest": MCYD24GGPSlatestFiles,
+            "previous": MCYD24GGPSpreviousFiles
+        },
+        "CYD35NOGPS": {
+            "latest": MCYD35NOGPSlatestFiles,
+            "previous": MCYD35NOGPSpreviousFiles
+        },
+        "CYD35GPS": {
+            "latest": MCYD35GPSlatestFiles,
+            "previous": MCYD35GPSpreviousFiles
+        },
+        "CYD32NOGPS": {
+            "latest": MCYD32NOGPSlatestFiles,
+            "previous": MCYD32NOGPSpreviousFiles
+        },
+        "CYD32GPS": {
+            "latest": MCYD32GPSlatestFiles,
+            "previous": MCYD32GPSpreviousFiles
+        }
+    };
 
-if (selectedVersion === "latest") {
-    selectedFiles = modelFilesMap[selectedModel];
+    selectedFiles = modelFilesMap[selectedModel][selectedVersion];
     if (!selectedFiles) {
-        console.error(`No files found for model: ${selectedModel}`);
+        console.error(`No files found for model: ${selectedModel} and version: ${selectedVersion}`);
         // Handle the error, e.g., show a message to the user
+        return;
     }
-} else {
-    console.error(`Unsupported version: ${selectedVersion}`);
-    // Handle the error, e.g., show a message to the user
-}
 
     const flashMessages = document.getElementById("flashMessages");
-    
+
     butErase.disabled = true;
     butProgram.disabled = true;
 
@@ -429,38 +461,38 @@ if (selectedVersion === "latest") {
     const flashingMessages = document.getElementById("flashMessages");
     flashingMessages.innerHTML = "";
 
-    totalSize = 0; 
+    totalSize = 0;
     flashedSize = 0;
-    
+
     for (let fileType of fileTypes) {
         let fileResource = selectedFiles[fileType];
         let response = await fetch(fileResource, { method: 'HEAD' });
         let fileSize = response.headers.get('content-length');
-    
+
         if (fileSize) {
             totalSize += parseInt(fileSize, 10);
         } else {
             console.error(`Failed to get size for file type: ${fileType}`);
         }
     }
-        
+
     const updateProgressBar = (cumulativeFlashedSize) => {
         if (cumulativeFlashedSize > totalSize) {
             console.error(`Cumulative flashed size exceeds total size: ${cumulativeFlashedSize} / ${totalSize}`);
         } else {
-            flashedSize = cumulativeFlashedSize; 
+            flashedSize = cumulativeFlashedSize;
         }
-    
+
         const progressPercentage = Math.min((flashedSize / totalSize) * 100, 100);
-        //console.log(`Flashing progress: ${progressPercentage.toFixed(2)}%`); 
-       
+        //console.log(`Flashing progress: ${progressPercentage.toFixed(2)}%`);
+
         // Update the progress bar in the UI
         const progressBar = document.getElementById("progress");
         if (progressBar) {
             progressBar.style.width = `${progressPercentage}%`;
         }
     };
-    
+
     const offsetsMap = {
         "CYD": [0x1000, 0x8000, 0x10000],
         "CYDNOGPS": [0x1000, 0x8000, 0x10000],
@@ -468,33 +500,33 @@ if (selectedVersion === "latest") {
         "CYD2USBNOGPS": [0x1000, 0x8000, 0x10000],
         "CYD24GPS": [0x1000, 0x8000, 0x10000],
         "CYD24NOGPS": [0x1000, 0x8000, 0x10000],
-        "CYD24GGPS": [0x1000, 0x8000, 0x10000], 
+        "CYD24GGPS": [0x1000, 0x8000, 0x10000],
         "CYD24GNOGPS": [0x1000, 0x8000, 0x10000],
         "CYD35GPS": [0x1000, 0x8000, 0x10000],
         "CYD35NOGPS": [0x1000, 0x8000, 0x10000],
         "CYD32GPS": [0x1000, 0x8000, 0x10000],
         "CYD32NOGPS": [0x1000, 0x8000, 0x10000]
     };
-    
+
     for (let fileType of fileTypes) {
         let fileResource = selectedFiles[fileType];
         let offset = offsetsMap[selectedModel][fileTypes.indexOf(fileType)];
-    
+
         try {
             let binfile = new File([await fetch(fileResource).then(r => r.blob())], fileType + ".bin");
             let contents = await readUploadedFileAsArrayBuffer(binfile);
-    
+
             await espStub.flashData(
                 contents,
                 (cumulativeFlashedSize) => updateProgressBar(cumulativeFlashedSize),
                 offset
             );
-    
+
             updateProgressBar(totalSize);
-    
+
             annMsg(` ---> Finished flashing ${fileType}.`);
             annMsg(` `);
-    
+
             await sleep(100);
         } catch (e) {
             errorMsg(e);
