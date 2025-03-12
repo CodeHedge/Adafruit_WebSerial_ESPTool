@@ -365,6 +365,8 @@ async function clickErase() {
 }
 
 async function clickProgram() {
+    console.log('MCYD2USBNOGPSlatestFiles:', MCYD2USBNOGPSlatestFiles);
+    console.log('MCYD2USBNOGPSpreviousFiles:', MCYD2USBNOGPSpreviousFiles);
     const readUploadedFileAsArrayBuffer = (inputFile) => {
         const reader = new FileReader();
 
