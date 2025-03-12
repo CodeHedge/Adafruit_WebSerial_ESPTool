@@ -398,7 +398,8 @@ async function clickProgram() {
             "latest": MCYDNOGPSlatestFiles
         },
         "CYD2USB": {
-            "latest": MCYD2USBlatestFiles
+            "latest": MCYD2USBlatestFiles,
+            "previous": MCYD2USBPreviousFiles
         },
         "CYD2USBNOGPS": {
             "latest": MCYD2USBNOGPSlatestFiles,
