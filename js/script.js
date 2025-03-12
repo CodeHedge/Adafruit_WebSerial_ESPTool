@@ -390,52 +390,41 @@ async function clickProgram() {
 
     const modelFilesMap = {
         "CYD": {
-            "latest": MCYDlatestFiles,
-            "previous": MCYDpreviousFiles
+            "latest": MCYDlatestFiles
         },
         "CYDNOGPS": {
-            "latest": MCYDNOGPSlatestFiles,
-            "previous": MCYDNOGPSpreviousFiles
+            "latest": MCYDNOGPSlatestFiles
         },
         "CYD2USB": {
-            "latest": MCYD2USBlatestFiles,
-            "previous": MCYD2USBpreviousFiles
+            "latest": MCYD2USBlatestFiles
         },
         "CYD2USBNOGPS": {
             "latest": MCYD2USBNOGPSlatestFiles,
             "previous": MCYD2USBNOGPSpreviousFiles
         },
         "CYD24NOGPS": {
-            "latest": MCYD24NOGPSlatestFiles,
-            "previous": MCYD24NOGPSpreviousFiles
+            "latest": MCYD24NOGPSlatestFiles
         },
         "CYD24GPS": {
-            "latest": MCYD24GPSlatestFiles,
-            "previous": MCYD24GPSpreviousFiles
+            "latest": MCYD24GPSlatestFiles
         },
         "CYD24GNOGPS": {
-            "latest": MCYD24GNOGPSlatestFiles,
-            "previous": MCYD24GNOGPSpreviousFiles
+            "latest": MCYD24GNOGPSlatestFiles
         },
         "CYD24GGPS": {
-            "latest": MCYD24GGPSlatestFiles,
-            "previous": MCYD24GGPSpreviousFiles
+            "latest": MCYD24GGPSlatestFiles
         },
         "CYD35NOGPS": {
-            "latest": MCYD35NOGPSlatestFiles,
-            "previous": MCYD35NOGPSpreviousFiles
+            "latest": MCYD35NOGPSlatestFiles
         },
         "CYD35GPS": {
-            "latest": MCYD35GPSlatestFiles,
-            "previous": MCYD35GPSpreviousFiles
+            "latest": MCYD35GPSlatestFiles
         },
         "CYD32NOGPS": {
-            "latest": MCYD32NOGPSlatestFiles,
-            "previous": MCYD32NOGPSpreviousFiles
+            "latest": MCYD32NOGPSlatestFiles
         },
         "CYD32GPS": {
-            "latest": MCYD32GPSlatestFiles,
-            "previous": MCYD32GPSpreviousFiles
+            "latest": MCYD32GPSlatestFiles
         }
     };
 
