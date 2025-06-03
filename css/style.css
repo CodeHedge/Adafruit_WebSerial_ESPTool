@@ -28,11 +28,13 @@
 }
 
 .Adafruit-Logo {
-  max-height: 65px; /* Constrain height to fit within header */
-  max-width: 150px; /* Constrain width to prevent overflow */
+  max-height: 200px; /* Increased from 65px to make logo larger */
+  max-width: 375px; /* Increased from 150px to make logo larger */
   height: auto; /* Maintain aspect ratio */
   width: auto; /* Maintain aspect ratio */
   object-fit: contain; /* Ensure the entire logo fits within bounds */
+  align-self: center; /* Centers the logo vertically within its flex container */
+  justify-self: flex-start; /* Justifies the logo to the left */
 }
 
 /* Common button styling */
