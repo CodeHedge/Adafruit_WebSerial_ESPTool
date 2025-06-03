@@ -10,25 +10,25 @@ const MSYDlatestFiles = {
 const MCYDlatestFiles = {
     'bootloader': 'resources/STATIC/M/CYD/esp32_marauder.ino.bootloader.bin',
     'partitions': 'resources/STATIC/M/CYD/esp32_marauder.ino.partitions.bin',
-    'firmware': 'resources/CURRENT/esp32_marauder_v1_4_3_20250416_cyd_gps.bin',
+    'firmware': 'resources/CURRENT/esp32_marauder_v1_6_1_20250530_cyd_2432S028.bin',
 };
 // Latest Marauder for CYDNOGPS
 const MCYDNOGPSlatestFiles = {
     'bootloader': 'resources/STATIC/M/CYD/esp32_marauder.ino.bootloader.bin',
     'partitions': 'resources/STATIC/M/CYD/esp32_marauder.ino.partitions.bin',
-    'firmware': 'resources/CURRENT/esp32_marauder_v1_4_3_20250416_cyd_nogps.bin',
+    'firmware': 'resources/CURRENT/esp32_marauder_v1_6_1_20250530_cyd_2432S028.bin',
 };
 // Latest Marauder for CYD2USB
 const MCYD2USBlatestFiles = {
     'bootloader': 'resources/STATIC/M/CYD/esp32_marauder.ino.bootloader.bin',
     'partitions': 'resources/STATIC/M/CYD/esp32_marauder.ino.partitions.bin',
-    'firmware': 'resources/CURRENT/esp32_marauder_v1_4_3_20250416_cyd2usb_gps.bin',
+    'firmware': 'resources/CURRENT/esp32_marauder_v1_6_1_20250530_cyd_2432S028_2usb.bin',
 };
 // Latest Marauder for CYD2USBNOGPS
 const MCYD2USBNOGPSlatestFiles = {
     'bootloader': 'resources/STATIC/M/CYD/esp32_marauder.ino.bootloader.bin',
     'partitions': 'resources/STATIC/M/CYD/esp32_marauder.ino.partitions.bin',
-    'firmware': 'resources/CURRENT/esp32_marauder_v1_4_3_20250416_cyd2usb_nogps.bin',
+    'firmware': 'resources/CURRENT/esp32_marauder_v1_6_1_20250530_cyd_2432S028_2usb.bin',
 };
 // Latest Marauder for CYD24GPS
 const MCYD24GPSlatestFiles = {
