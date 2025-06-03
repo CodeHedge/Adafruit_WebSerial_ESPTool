@@ -386,25 +386,7 @@ async function clickProgram() {
 
     let selectedFiles;
     const modelFilesMap = {
-        "SYD": MSYDlatestFiles,
-        "CYD": MCYDlatestFiles,
-        "CYDNOGPS": MCYDNOGPSlatestFiles,
-        "CYD2USB": MCYD2USBlatestFiles,
-        "CYD2USBNOGPS": MCYD2USBNOGPSlatestFiles,
-        "CYD24NOGPS": MCYD24NOGPSlatestFiles,
-        "CYD24GPS": MCYD24GPSlatestFiles,
-        "CYD24GNOGPS": MCYD24GNOGPSlatestFiles,
-        "CYD24GGPS": MCYD24GGPSlatestFiles,
-        "CYD24CAPNOGPS": MCYD24CAPNOGPSlatestFiles,
-        "CYD24CAPGPS": MCYD24CAPGPSlatestFiles,
-        "CYD35NOGPS": MCYD35NOGPSlatestFiles,
-        "CYD35GPS": MCYD35GPSlatestFiles,
-        "CYD35CAPNOGPS": MCYD35CAPNOGPSlatestFiles,
-        "CYD35CAPGPS": MCYD35CAPGPSlatestFiles,
-        "CYD32NOGPS": MCYD32NOGPSlatestFiles,
-        "CYD32GPS": MCYD32GPSlatestFiles,
-        "CYD32CAPNOGPS": MCYD32CAPNOGPSlatestFiles,
-        "CYD32CAPGPS": MCYD32CAPGPSlatestFiles
+        "CYD2USB": MCYD2USBlatestFiles
     };
 
     if (selectedVersion === "latest") {
@@ -438,13 +420,8 @@ async function clickProgram() {
     let totalSize = 0;
     let flashedSize = 0;
     let fileTypes;
-    if (selectedModel === "SYD") {
-        // Include boot_app0 for SYD model
-        fileTypes = ['bootloader', 'partitions', 'boot_app0', 'firmware'];
-    } else {
-        // Other models only have these three
-        fileTypes = ['bootloader', 'partitions', 'firmware'];
-    }
+    // CYD2USB only has these three files
+    fileTypes = ['bootloader', 'partitions', 'firmware'];
     for (let fileType of fileTypes) {
         let fileResource = selectedFiles[fileType];
         let response = await fetch(fileResource, { method: 'HEAD' });
