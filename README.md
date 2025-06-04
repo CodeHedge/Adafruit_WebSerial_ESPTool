@@ -9,7 +9,7 @@ A fork of Adafruit’s WebSerial tool for flashing ESP32Marauder onto the Cheap 
 #### 1. Automatic Flashing
 This method flashes your chosen ESP32 Marauder firmware version to your selected Model.
 <p align="center">
-  <img src="https://github.com/Fr4nkFletcher/Adafruit_WebSerial_ESPTool/blob/main/assets/sc00000.jpg" alt="Flashing Marauder Automatically">
+  <img src="https://github.com/CodeHedge/Adafruit_WebSerial_ESPTool/blob/main/assets/sc00000.jpg" alt="Flashing Marauder Automatically">
 </p>
 
 #### 2. Manual Flashing
@@ -19,7 +19,7 @@ Specifies the bootloader, partitions, bootapp, and firmware to upload your chose
   <img src="https://github.com/Fr4nkFletcher/Adafruit_WebSerial_ESPTool/blob/main/assets/scman1.png" alt="Manual Flashing">
 </p>
 
-For manual flashing, visit:  [Manual Flasher](https://fr4nkfletcher.github.io/Adafruit_WebSerial_ESPTool/manual.html)
+For manual flashing, visit:  [Manual Flasher](https://CodeHedge.github.io/Adafruit_WebSerial_ESPTool/manual.html)
 
 For further instructions, check out @Blough's [tutorial](https://github.com/witnessmenow/ESP-Web-Tools-Tutorial).
 
