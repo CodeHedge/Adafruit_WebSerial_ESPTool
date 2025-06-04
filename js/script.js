@@ -386,7 +386,8 @@ async function clickProgram() {
 
     let selectedFiles;
     const modelFilesMap = {
-        "CYD2USB": MCYD2USBlatestFiles
+        "CYD2USB_INVERT_OFF": MCYD2USBInvertOffFiles,
+        "CYD2USB_INVERT_ON": MCYD2USBInvertOnFiles
     };
 
     if (selectedVersion === "latest") {
@@ -451,7 +452,8 @@ async function clickProgram() {
         "SYD": [0x0, 0x8000, 0xE000, 0x10000],
         "CYD": [0x1000, 0x8000, 0x10000],
         "CYDNOGPS": [0x1000, 0x8000, 0x10000],
-        "CYD2USB": [0x1000, 0x8000, 0x10000],
+        "CYD2USB_INVERT_OFF": [0x1000, 0x8000, 0x10000],
+        "CYD2USB_INVERT_ON": [0x1000, 0x8000, 0x10000],
         "CYD2USBNOGPS": [0x1000, 0x8000, 0x10000],
         "CYD24GPS": [0x1000, 0x8000, 0x10000],
         "CYD24NOGPS": [0x1000, 0x8000, 0x10000],
