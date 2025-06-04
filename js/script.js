@@ -72,12 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
     modelSelect.addEventListener("change", checkDropdowns);
   
     function checkDropdowns() {
-        const isAnyDropdownNull = [modelSelect.value, versionSelect.value, variantSelect.value].includes("NULL");
-        const isBoardNotS2 = (modelSelect.value !== "S2" && modelSelect.value !== "S2SD");
-        const isBlackMagicSelected = variantSelect.value === "BlackMagic";
+        const isAnyDropdownNull = [modelSelect.value, versionSelect.value].includes("NULL");
 
-        if (isAnyDropdownNull || (isBoardNotS2 && isBlackMagicSelected)) {
-            butProgram.disabled = false;
+        if (isAnyDropdownNull) {
+            butProgram.disabled = true;
         } else {
             butProgram.disabled = false;
         }
