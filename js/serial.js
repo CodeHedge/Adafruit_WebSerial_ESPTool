@@ -117,7 +117,7 @@ function displayData(data) {
         const writer = port.writable.getWriter();
     
         try {
-            const eolOption = "clrf";
+            const eolOption = "crlf";
             let formattedData = typeof data === 'string' ? data : '';
             
             switch (eolOption) {
