@@ -1,0 +1,36 @@
+{
+  "version": "1.8.11",
+  "devices": [
+    {
+      "id": "CYD2USB_INVERT_OFF",
+      "name": "CYD2USB V2 2.8\" (Display Invert Off)",
+      "group": "ESP32-2432S028R V2 2.8\" Cheap-Yellow-Display",
+      "files": {
+        "bootloader": "resources/STATIC/M/CYD/esp32_marauder.ino.bootloader.bin",
+        "partitions": "resources/STATIC/M/CYD/esp32_marauder.ino.partitions.bin",
+        "firmware": "resources/CURRENT/esp32_marauder_v1_8_11_20250416_cyd2usb_gps_InvertOff.bin"
+      }
+    },
+    {
+      "id": "CYD2USB_INVERT_ON",
+      "name": "CYD2USB V2 2.8\" (Display Invert On)",
+      "group": "ESP32-2432S028R V2 2.8\" Cheap-Yellow-Display",
+      "files": {
+        "bootloader": "resources/STATIC/M/CYD/esp32_marauder.ino.bootloader.bin",
+        "partitions": "resources/STATIC/M/CYD/esp32_marauder.ino.partitions.bin",
+        "firmware": "resources/CURRENT/esp32_marauder_v1_8_11_20250416_cyd2usb_gps_InvertOn.bin"
+      }
+    },
+    {
+      "id": "CYD2USB_V21_INVERT_OFF",
+      "name": "CYD2USB V2.1 2.8\" (Display Invert Off)",
+      "group": "ESP32-2432S028R V2.1 2.8\" Cheap-Yellow-Display",
+      "files": {
+        "bootloader": "resources/STATIC/M/CYD/esp32_marauder.ino.bootloader.bin",
+        "partitions": "resources/STATIC/M/CYD/esp32_marauder.ino.partitions.bin",
+        "firmware": "resources/CURRENT/esp32_marauder_v1_8_11_20250416_cyd2_1usb_gps_InvertOff.bin"
+      }
+    }
+  ]
+}
+

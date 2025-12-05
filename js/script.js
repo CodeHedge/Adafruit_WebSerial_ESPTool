@@ -17,7 +17,7 @@ const lightSS = document.getElementById("light");
 const darkSS = document.getElementById("dark");
 const darkMode = document.getElementById("darkmode");
 const modelSelect = document.getElementById("modelSelect");
-//const versionSelect = document.getElementById("versionSelect");
+const versionSelect = document.getElementById("versionSelect");
 //const variantSelect = document.getElementById("variantSelect");
 const offsets = [0x1000, 0x8000, 0xE000, 0x10000];
 const offsets2 = [0x0, 0x8000, 0xE000, 0x10000];
@@ -85,6 +85,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     checkDropdowns();
+    
+    // Load manifest and populate UI
+    initializeFromManifest().catch((error) => {
+        console.error('Failed to initialize from manifest:', error);
+        errorMsg(`Failed to load device configuration: ${error.message}`);
+    });
+    
     logMsg("ESP Web Flasher loaded.");
 });
 
@@ -382,23 +389,23 @@ async function clickProgram() {
     const progressBarDialog = createProgressBarDialog();
     const progress = document.getElementById("progress"); 
 
-    let selectedFiles;
-    const modelFilesMap = {
-        "CYD2USB_INVERT_OFF": MCYD2USBInvertOffFiles,
-        "CYD2USB_INVERT_ON": MCYD2USBInvertOnFiles,
-        "CYD2USB_V21_INVERT_OFF": MCYD2USBV21InvertOffFiles
-    };
+    // Ensure manifest is loaded
+    try {
+        await loadManifest();
+    } catch (error) {
+        errorMsg(`Failed to load manifest: ${error.message}`);
+        return;
+    }
 
+    let selectedFiles;
     if (selectedVersion === "latest") {
-        selectedFiles = modelFilesMap[selectedModel];
+        selectedFiles = getDeviceFiles(selectedModel);
         if (!selectedFiles) {
-            console.error(`No files found for model: ${selectedModel}`);
-            // Handle the error (e.g., show a message to the user)
+            errorMsg(`No files found for model: ${selectedModel}`);
             return;
         }
     } else {
-        console.error(`Unsupported version: ${selectedVersion}`);
-        // Handle the error (e.g., show a message to the user)
+        errorMsg(`Unsupported version: ${selectedVersion}`);
         return;
     }
 
@@ -569,6 +576,105 @@ function ucWords(text) {
 
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Initialize the UI from the manifest
+ */
+async function initializeFromManifest() {
+    try {
+        await loadManifest();
+        
+        // Update version display
+        updateVersionDisplay();
+        
+        // Populate device dropdown
+        populateDeviceDropdown();
+        
+        // Update version dropdown
+        updateVersionDropdown();
+    } catch (error) {
+        console.error('Error initializing from manifest:', error);
+        throw error;
+    }
+}
+
+/**
+ * Populate the device dropdown from manifest
+ */
+function populateDeviceDropdown() {
+    const devices = getAllDevices();
+    if (devices.length === 0) {
+        console.warn('No devices found in manifest');
+        return;
+    }
+    
+    // Clear existing options (except the first NULL option)
+    const modelSelect = document.getElementById("modelSelect");
+    modelSelect.innerHTML = '<option value="NULL" disabled selected style="display:none;"><b>--- SELECT BOARD ---</b></option>';
+    
+    // Group devices by their group property
+    const groupedDevices = {};
+    devices.forEach(device => {
+        if (!groupedDevices[device.group]) {
+            groupedDevices[device.group] = [];
+        }
+        groupedDevices[device.group].push(device);
+    });
+    
+    // Create optgroups and options
+    Object.keys(groupedDevices).forEach(groupName => {
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = `+ ${groupName}`;
+        
+        groupedDevices[groupName].forEach(device => {
+            const option = document.createElement('option');
+            option.value = device.id;
+            option.textContent = `- ${device.name}`;
+            optgroup.appendChild(option);
+        });
+        
+        modelSelect.appendChild(optgroup);
+    });
+}
+
+/**
+ * Update version display in header
+ */
+function updateVersionDisplay() {
+    const version = getManifestVersion();
+    const versionElement = document.getElementById('versionDisplay');
+    if (versionElement) {
+        if (version) {
+            versionElement.innerHTML = `<b>v${version}</b>`;
+        } else {
+            versionElement.innerHTML = `<b>Unknown</b>`;
+        }
+    }
+}
+
+/**
+ * Update version dropdown
+ */
+function updateVersionDropdown() {
+    const version = getManifestVersion();
+    const versionSelect = document.getElementById("versionSelect");
+    
+    // Clear existing options (except the first NULL option)
+    versionSelect.innerHTML = '<option value="NULL" disabled selected style="display:none;"><b>--- VERSION ---</b></option>';
+    
+    // Add latest version option
+    if (version) {
+        const option = document.createElement('option');
+        option.value = 'latest';
+        option.textContent = `Current ${version}`;
+        versionSelect.appendChild(option);
+    } else {
+        const option = document.createElement('option');
+        option.value = 'latest';
+        option.textContent = 'Current (latest)';
+        versionSelect.appendChild(option);
+    }
 }
 
 
