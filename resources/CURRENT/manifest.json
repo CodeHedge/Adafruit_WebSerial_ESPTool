@@ -1,5 +1,5 @@
 {
-  "version": "1.8.11",
+  "version": "1.9.0",
   "devices": [
     {
       "id": "CYD2USB_INVERT_OFF",
@@ -8,7 +8,7 @@
       "files": {
         "bootloader": "resources/STATIC/M/CYD/esp32_marauder.ino.bootloader.bin",
         "partitions": "resources/STATIC/M/CYD/esp32_marauder.ino.partitions.bin",
-        "firmware": "resources/CURRENT/esp32_marauder_v1_8_11_20250416_cyd2usb_gps_InvertOff.bin"
+        "firmware": "resources/CURRENT/esp32_marauder_v1_9_0_20251205_cyd_2432S028.bin"
       }
     },
     {
@@ -18,7 +18,7 @@
       "files": {
         "bootloader": "resources/STATIC/M/CYD/esp32_marauder.ino.bootloader.bin",
         "partitions": "resources/STATIC/M/CYD/esp32_marauder.ino.partitions.bin",
-        "firmware": "resources/CURRENT/esp32_marauder_v1_8_11_20250416_cyd2usb_gps_InvertOn.bin"
+        "firmware": "resources/CURRENT/esp32_marauder_v1_9_0_20251205_cyd_2432S028_inverted.bin"
       }
     },
     {
@@ -28,9 +28,8 @@
       "files": {
         "bootloader": "resources/STATIC/M/CYD/esp32_marauder.ino.bootloader.bin",
         "partitions": "resources/STATIC/M/CYD/esp32_marauder.ino.partitions.bin",
-        "firmware": "resources/CURRENT/esp32_marauder_v1_8_11_20250416_cyd2_1usb_gps_InvertOff.bin"
+        "firmware": "resources/CURRENT/esp32_marauder_v1_9_0_20251205_cyd_2432S028_2usb.bin"
       }
     }
   ]
 }
-
