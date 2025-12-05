@@ -6,7 +6,7 @@ let manifestLoadPromise = null;
  * Load the manifest.json file from resources/CURRENT/
  * Caches the result after first load
  */
-async function loadManifest() {
+export async function loadManifest() {
     if (manifestData) {
         return manifestData;
     }
@@ -37,7 +37,7 @@ async function loadManifest() {
  * @param {string} deviceId - The device ID (e.g., "CYD2USB_INVERT_OFF")
  * @returns {Object|null} Object with bootloader, partitions, and firmware paths, or null if not found
  */
-function getDeviceFiles(deviceId) {
+export function getDeviceFiles(deviceId) {
     if (!manifestData) {
         console.error('Manifest not loaded. Call loadManifest() first.');
         return null;
@@ -56,7 +56,7 @@ function getDeviceFiles(deviceId) {
  * Get the version from the manifest
  * @returns {string|null} Version string or null if manifest not loaded
  */
-function getManifestVersion() {
+export function getManifestVersion() {
     if (!manifestData) {
         return null;
     }
@@ -67,7 +67,7 @@ function getManifestVersion() {
  * Get all devices from the manifest
  * @returns {Array} Array of device objects
  */
-function getAllDevices() {
+export function getAllDevices() {
     if (!manifestData) {
         return [];
     }

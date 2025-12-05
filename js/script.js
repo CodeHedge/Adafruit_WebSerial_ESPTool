@@ -1,4 +1,7 @@
+import { loadManifest, getDeviceFiles, getManifestVersion, getAllDevices } from './variables.js';
+
 let espStub;
+let isConnected = false;
 
 const baudRates = 115200;
 
@@ -57,10 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const notSupported = document.getElementById("notSupported");
-    if ("serial" in navigator) {
-        notSupported.classList.add("hidden"); 
-    } else {
-        notSupported.classList.remove("hidden");
+    if (notSupported) {
+        if ("serial" in navigator) {
+            notSupported.classList.add("hidden"); 
+        } else {
+            notSupported.classList.remove("hidden");
+        }
     }
 
     modelSelect.addEventListener("change", () => {
@@ -234,14 +239,6 @@ async function clickConnect() {
         toggleUIConnected(false);
         espStub = undefined;
         return;
-    }
-
-    try {
-        // Connection logic
-        checkDropdowns();
-    } catch (err) {
-        console.error('Error during connection setup:', err);
-        butProgram.disabled = false; // Ensure button is disabled on error
     }
 
     const esploaderMod = await window.esptoolPackage;

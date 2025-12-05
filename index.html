@@ -58,7 +58,7 @@
 
 
     <!-- import the webpage's javascript file -->
-    <script module>
+    <script type="module">
       window.esptoolPackage = import(
         // In development we import locally.
         window.location.hostname === "localhost"
@@ -66,8 +66,8 @@
           : "https://cdn.jsdelivr.net/gh/adafruit/Adafruit_WebSerial_ESPTool@latest/dist/web/index.js"
       );
     </script>
-    <script src="js/variables.js" module defer></script>
-   <script src="js/script.js" module defer></script>
+    <script src="js/variables.js" type="module"></script>
+    <script src="js/script.js" type="module"></script>
   </head>
   <body>
     <header class="header">
