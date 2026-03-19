@@ -1,4 +1,4 @@
-import { loadManifest, getDeviceFiles, getManifestVersion, getAllDevices } from './variables.js';
+import { loadManifest, getDeviceFiles, getManifestVersion, getAllDevices, setProduct, getProduct, getDeviceOffsets, getDeviceVersion } from './variables.js';
 
 let espStub;
 let isConnected = false;
@@ -26,6 +26,75 @@ const offsets = [0x1000, 0x8000, 0xE000, 0x10000];
 const offsets2 = [0x0, 0x8000, 0xE000, 0x10000];
 
 const appDiv = document.getElementById("app");
+
+const productConfig = {
+    biscuit: {
+        title: 'Biscuit WebFlasher',
+        logo: 'assets/logo_biscuit.png',
+        footerText: 'Biscuit Firmware',
+        footerLink: 'https://github.com/CodeHedge/Biscuit',
+        footerLinkText: 'Biscuit',
+        headerGradient: 'linear-gradient(135deg, #e67e22, #f39c12)'
+    },
+    marauder: {
+        title: 'CYM WebFlasher',
+        logo: 'assets/logo2.png',
+        footerText: 'powered by Adafruit WebSerial ESPTool',
+        footerLink: 'https://github.com/CodeHedge/ESP32-Marauder-Cheap-Yellow-Display',
+        footerLinkText: 'Cheap-Yellow-Marauder',
+        headerGradient: 'linear-gradient(135deg, #5c6bc0, #ff6b6b)'
+    }
+};
+
+function initializeProduct(product) {
+    const config = productConfig[product];
+    if (!config) return;
+
+    // Set product in variables module
+    setProduct(product);
+
+    // Update page title
+    document.title = config.title;
+
+    // Update header logo
+    const headerLogo = document.getElementById('headerLogo');
+    if (headerLogo) headerLogo.src = config.logo;
+
+    // Update header gradient
+    const mainHeader = document.getElementById('mainHeader');
+    if (mainHeader) {
+        mainHeader.style.background = config.headerGradient;
+        mainHeader.style.borderBottom = '5px solid rgba(255,255,255,0.2)';
+    }
+
+    // Update footer
+    const footerRepoLink = document.getElementById('footerRepoLink');
+    if (footerRepoLink) {
+        footerRepoLink.href = config.footerLink;
+        footerRepoLink.textContent = config.footerLinkText;
+    }
+    const footerPoweredText = document.getElementById('footerPoweredText');
+    if (footerPoweredText) {
+        if (product === 'biscuit') {
+            footerPoweredText.innerHTML = config.footerText;
+        } else {
+            footerPoweredText.innerHTML = 'powered by <a href="https://github.com/CodeHedge/Adafruit_WebSerial_ESPTool">Adafruit WebSerial ESPTool</a>';
+        }
+    }
+
+    // Hide product selector
+    const selector = document.getElementById('productSelector');
+    if (selector) selector.classList.add('hidden');
+
+    // Save selection
+    localStorage.setItem('selectedProduct', product);
+
+    // Load manifest and populate UI
+    initializeFromManifest().catch((error) => {
+        console.error('Failed to initialize from manifest:', error);
+        errorMsg(`Failed to load device configuration: ${error.message}`);
+    });
+}
 
 document.getElementById('butConnect').addEventListener('click', function() {
     var icon = this.querySelector('i');
@@ -62,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const notSupported = document.getElementById("notSupported");
     if (notSupported) {
         if ("serial" in navigator) {
-            notSupported.classList.add("hidden"); 
+            notSupported.classList.add("hidden");
         } else {
             notSupported.classList.remove("hidden");
         }
@@ -70,12 +139,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     modelSelect.addEventListener("change", () => {
         const selectedModel = modelSelect.value;
-        // Handle model change if needed
+        // Update version display for per-device versions (Biscuit mode)
+        const deviceVersion = getDeviceVersion(selectedModel);
+        if (deviceVersion) {
+            const versionElement = document.getElementById('versionDisplay');
+            if (versionElement) {
+                versionElement.innerHTML = `<b>v${deviceVersion}</b>`;
+            }
+        }
     });
 
 
     modelSelect.addEventListener("change", checkDropdowns);
-  
+
     function checkDropdowns() {
         const isAnyDropdownNull = [modelSelect.value, versionSelect.value].includes("NULL");
 
@@ -90,13 +166,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     checkDropdowns();
-    
-    // Load manifest and populate UI
-    initializeFromManifest().catch((error) => {
-        console.error('Failed to initialize from manifest:', error);
-        errorMsg(`Failed to load device configuration: ${error.message}`);
+
+    // Product selector: check URL param or localStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlProduct = urlParams.get('product');
+    const savedProduct = localStorage.getItem('selectedProduct');
+
+    // Wire up product card click handlers
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const product = card.getAttribute('data-product');
+            initializeProduct(product);
+        });
     });
-    
+
+    // Wire up "Switch Device" link
+    const switchLink = document.getElementById('switchProduct');
+    if (switchLink) {
+        switchLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('selectedProduct');
+            const selector = document.getElementById('productSelector');
+            if (selector) selector.classList.remove('hidden');
+        });
+    }
+
+    if (urlProduct && productConfig[urlProduct]) {
+        initializeProduct(urlProduct);
+    } else if (savedProduct && productConfig[savedProduct]) {
+        initializeProduct(savedProduct);
+    } else {
+        // Show product selector modal
+        const selector = document.getElementById('productSelector');
+        if (selector) selector.classList.remove('hidden');
+    }
+
     logMsg("ESP Web Flasher loaded.");
 });
 
@@ -108,9 +212,9 @@ function logMsg(text) {
         log.innerHTML = logLines.splice(-maxLogLength).join("<br>\n");
     }
 
-    
+
     log.scrollTop = log.scrollHeight;
-    
+
 }
 
 
@@ -123,7 +227,7 @@ function annMsg(text) {
     }
 
     log.scrollTop = log.scrollHeight;
-    
+
 }
 function compMsg(text) {
     log.innerHTML += `<font color='#2ED832'>` + text + `<br></font>`;
@@ -134,7 +238,7 @@ function compMsg(text) {
     }
 
     log.scrollTop = log.scrollHeight;
-    
+
 }
 function initMsg(text) {
     log.innerHTML += `<font color='#F72408'>` + text + `<br></font>`;
@@ -300,13 +404,13 @@ function createProgressBarDialog() {
     progressBarDialog.style.left = "50%";
     progressBarDialog.style.top = "50%";
     progressBarDialog.style.transform = "translate(-50%, -50%)";
-    progressBarDialog.style.padding = "40px"; 
+    progressBarDialog.style.padding = "40px";
     progressBarDialog.style.backgroundColor = "#333333";
     progressBarDialog.style.border = "2px solid #6272a4";
     progressBarDialog.style.borderRadius = "10px";
     progressBarDialog.style.color = "white";
     progressBarDialog.style.zIndex = "1000";
-    progressBarDialog.style.fontSize = "1.5em"; 
+    progressBarDialog.style.fontSize = "1.5em";
     progressBarDialog.style.maxWidth = "350px"; // Set a maximum width for the dialog
     progressBarDialog.style.width = "50%";
     progressBarDialog.style.boxSizing = "border-box"; // Include padding in width calculation
@@ -384,7 +488,7 @@ async function clickProgram() {
     const selectedModel = modelSelect.value;
     const selectedVersion = versionSelect.value;
     const progressBarDialog = createProgressBarDialog();
-    const progress = document.getElementById("progress"); 
+    const progress = document.getElementById("progress");
 
     // Ensure manifest is loaded
     try {
@@ -475,10 +579,23 @@ async function clickProgram() {
         "CYD32CAPNOGPS": [0x1000, 0x8000, 0x10000]
     };
 
+    // Resolve offsets: try manifest first (Biscuit), fall back to offsetsMap (Marauder)
+    let deviceOffsets = getDeviceOffsets(selectedModel);
+    if (!deviceOffsets) {
+        deviceOffsets = offsetsMap[selectedModel];
+    }
+    if (!deviceOffsets) {
+        errorMsg(`No offset mapping found for model: ${selectedModel}`);
+        progressBarDialog.remove();
+        butErase.disabled = false;
+        butProgram.disabled = false;
+        return;
+    }
+
     // Flash each file in sequence at the specified offsets
     for (let fileType of fileTypes) {
         let fileResource = selectedFiles[fileType];
-        let offset = offsetsMap[selectedModel][fileTypes.indexOf(fileType)];
+        let offset = deviceOffsets[fileTypes.indexOf(fileType)];
         try {
             // Fetch the binary data for the file
             let binFile = new File([await fetch(fileResource).then(r => r.blob())], fileType + ".bin");
@@ -510,7 +627,7 @@ async function clickProgram() {
     compMsg(" ");
     logMsg("Restart the board or disconnect to use the device.");
 }
-        
+
 async function clickClear() {
     log.innerHTML = "";
 }
@@ -581,13 +698,13 @@ function sleep(ms) {
 async function initializeFromManifest() {
     try {
         await loadManifest();
-        
+
         // Update version display
         updateVersionDisplay();
-        
+
         // Populate device dropdown
         populateDeviceDropdown();
-        
+
         // Update version dropdown
         updateVersionDropdown();
     } catch (error) {
@@ -605,11 +722,11 @@ function populateDeviceDropdown() {
         console.warn('No devices found in manifest');
         return;
     }
-    
+
     // Clear existing options (except the first NULL option)
     const modelSelect = document.getElementById("modelSelect");
     modelSelect.innerHTML = '<option value="NULL" disabled selected style="display:none;"><b>--- SELECT BOARD ---</b></option>';
-    
+
     // Group devices by their group property
     const groupedDevices = {};
     devices.forEach(device => {
@@ -618,19 +735,19 @@ function populateDeviceDropdown() {
         }
         groupedDevices[device.group].push(device);
     });
-    
+
     // Create optgroups and options
     Object.keys(groupedDevices).forEach(groupName => {
         const optgroup = document.createElement('optgroup');
         optgroup.label = `+ ${groupName}`;
-        
+
         groupedDevices[groupName].forEach(device => {
             const option = document.createElement('option');
             option.value = device.id;
             option.textContent = `- ${device.name}`;
             optgroup.appendChild(option);
         });
-        
+
         modelSelect.appendChild(optgroup);
     });
 }
@@ -639,9 +756,15 @@ function populateDeviceDropdown() {
  * Update version display in header
  */
 function updateVersionDisplay() {
-    const version = getManifestVersion();
+    const product = getProduct();
     const versionElement = document.getElementById('versionDisplay');
-    if (versionElement) {
+    if (!versionElement) return;
+
+    if (product === 'biscuit') {
+        // Biscuit devices have per-device versions; show prompt until one is selected
+        versionElement.innerHTML = `<b>Select a board</b>`;
+    } else {
+        const version = getManifestVersion();
         if (version) {
             versionElement.innerHTML = `<b>v${version}</b>`;
         } else {
@@ -654,14 +777,21 @@ function updateVersionDisplay() {
  * Update version dropdown
  */
 function updateVersionDropdown() {
+    const product = getProduct();
     const version = getManifestVersion();
     const versionSelect = document.getElementById("versionSelect");
-    
+
     // Clear existing options (except the first NULL option)
     versionSelect.innerHTML = '<option value="NULL" disabled selected style="display:none;"><b>--- VERSION ---</b></option>';
-    
+
     // Add latest version option
-    if (version) {
+    if (product === 'biscuit') {
+        // For Biscuit, just show "Current" since versions are per-device
+        const option = document.createElement('option');
+        option.value = 'latest';
+        option.textContent = 'Current';
+        versionSelect.appendChild(option);
+    } else if (version) {
         const option = document.createElement('option');
         option.value = 'latest';
         option.textContent = `Current ${version}`;
@@ -673,5 +803,3 @@ function updateVersionDropdown() {
         versionSelect.appendChild(option);
     }
 }
-
-

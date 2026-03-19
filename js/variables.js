@@ -1,23 +1,52 @@
 // Manifest-based device configuration
 let manifestData = null;
 let manifestLoadPromise = null;
+let currentProduct = null;
+let manifestPath = null;
 
 /**
- * Load the manifest.json file from resources/CURRENT/
+ * Set the active product and configure manifest path
+ * @param {string} product - 'biscuit' or 'marauder'
+ */
+export function setProduct(product) {
+    currentProduct = product;
+    // Reset cached manifest when switching products
+    manifestData = null;
+    manifestLoadPromise = null;
+
+    if (product === 'biscuit') {
+        manifestPath = 'resources/BISCUIT/CURRENT/manifest.json';
+    } else {
+        manifestPath = 'resources/CURRENT/manifest.json';
+    }
+}
+
+/**
+ * Get the current product
+ * @returns {string|null}
+ */
+export function getProduct() {
+    return currentProduct;
+}
+
+/**
+ * Load the manifest.json file
  * Caches the result after first load
  */
 export async function loadManifest() {
     if (manifestData) {
         return manifestData;
     }
-    
+
     if (manifestLoadPromise) {
         return manifestLoadPromise;
     }
-    
+
+    const url = (manifestPath || 'resources/CURRENT/manifest.json') + '?t=' + Date.now();
+
     manifestLoadPromise = (async () => {
         try {
-            const response = await fetch('resources/CURRENT/manifest.json');
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`Failed to load manifest: ${response.status} ${response.statusText}`);
             }
@@ -28,13 +57,13 @@ export async function loadManifest() {
             throw error;
         }
     })();
-    
+
     return manifestLoadPromise;
 }
 
 /**
  * Get file paths for a specific device from the manifest
- * @param {string} deviceId - The device ID (e.g., "CYD2USB_INVERT_OFF")
+ * @param {string} deviceId - The device ID
  * @returns {Object|null} Object with bootloader, partitions, and firmware paths, or null if not found
  */
 export function getDeviceFiles(deviceId) {
@@ -42,25 +71,25 @@ export function getDeviceFiles(deviceId) {
         console.error('Manifest not loaded. Call loadManifest() first.');
         return null;
     }
-    
+
     const device = manifestData.devices.find(d => d.id === deviceId);
     if (!device) {
         console.error(`Device not found in manifest: ${deviceId}`);
         return null;
     }
-    
+
     return device.files;
 }
 
 /**
- * Get the version from the manifest
+ * Get the version from the manifest (top-level for Marauder)
  * @returns {string|null} Version string or null if manifest not loaded
  */
 export function getManifestVersion() {
     if (!manifestData) {
         return null;
     }
-    return manifestData.version;
+    return manifestData.version || null;
 }
 
 /**
@@ -72,4 +101,36 @@ export function getAllDevices() {
         return [];
     }
     return manifestData.devices;
+}
+
+/**
+ * Get flash offsets for a specific device from the manifest
+ * @param {string} deviceId - The device ID
+ * @returns {Array|null} Array of offsets, or null if not found
+ */
+export function getDeviceOffsets(deviceId) {
+    if (!manifestData) {
+        return null;
+    }
+    const device = manifestData.devices.find(d => d.id === deviceId);
+    if (!device || !device.offsets) {
+        return null;
+    }
+    return device.offsets;
+}
+
+/**
+ * Get version for a specific device from the manifest
+ * @param {string} deviceId - The device ID
+ * @returns {string|null} Version string, or null if not found
+ */
+export function getDeviceVersion(deviceId) {
+    if (!manifestData) {
+        return null;
+    }
+    const device = manifestData.devices.find(d => d.id === deviceId);
+    if (!device || !device.version) {
+        return null;
+    }
+    return device.version;
 }

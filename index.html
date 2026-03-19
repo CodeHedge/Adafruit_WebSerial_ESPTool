@@ -70,9 +70,26 @@
     <script src="js/script.js" type="module"></script>
   </head>
   <body>
-    <header class="header">
+    <div id="productSelector" class="product-overlay">
+      <div class="product-modal">
+        <h2>Choose Your Device</h2>
+        <div class="product-cards">
+          <div class="product-card" data-product="biscuit">
+            <img src="assets/logo_biscuit.png" alt="Biscuit">
+            <h3>Biscuit</h3>
+            <p>DIY & Node Firmware</p>
+          </div>
+          <div class="product-card" data-product="marauder">
+            <img src="assets/logo2.png" alt="CYD Marauder">
+            <h3>CYD Marauder</h3>
+            <p>CYD Display Firmware</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <header id="mainHeader" class="header">
       <div class="left">
-        <img src="assets/logo2.png" class="Adafruit-Logo">
+        <img id="headerLogo" src="assets/logo2.png" class="Adafruit-Logo">
       </div>
       <div class="right">
         <p class="top-text">
@@ -82,7 +99,7 @@
       </div>
 
       </header>
-     
+
 <main class="main">
   <div class="subheader">
     &nbsp;&nbsp;<a id="butConnect"><i class="fas fa-plug"></i> Connect</a>
@@ -99,7 +116,7 @@
           <div class="upload">
             <label class="firmware">
               <div class="model-select">
-                
+
                 <select id="modelSelect" class="dropdown"style="background-color: #333; color: white;">
                   <option value="NULL" disabled selected style="display:none;"><b>--- SELECT BOARD ---</b></option>
                 </select>
@@ -107,7 +124,7 @@
                   <option value="NULL" disabled selected style="display:none;"><b>--- VERSION ---</b></option>
                 </select>
 
-    
+
               </div>
 <style>
     /* Hides scrollbar for any element with class .no-scrollbar */
@@ -121,15 +138,15 @@
 </style>
             </label>
             <br><br>
-          </div> 
+          </div>
           <div class="buttons">
             &nbsp;&nbsp;&nbsp;<a id="butProgram"><i class="fas fa-upload"></i> Program</a>&nbsp;&nbsp;
             <a id="butErase"><i class="fas fa-trash"></i> Erase</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-           
+
           </div>
         </div>
         <div id="flashMessages" class="flashMessages"></div>
-        
+
         <div id="log"></div>
 
       </div>
@@ -147,14 +164,12 @@
       </div>
     </div>
   </div>
-  <div class="center">
-    <i class="fab fa-github"></i>  <a href="https://github.com/CodeHedge/ESP32-Marauder-Cheap-Yellow-Display">Cheap-Yellow-Marauder</a> &mdash;
-    powered by <a href="https://github.com/CodeHedge/Adafruit_WebSerial_ESPTool">Adafruit WebSerial ESPTool</a>  <i class="fas fa-flask"></i> 
+  <div id="footerCenter" class="center">
+    <i class="fab fa-github"></i>  <a id="footerRepoLink" href="https://github.com/CodeHedge/ESP32-Marauder-Cheap-Yellow-Display">Cheap-Yellow-Marauder</a> &mdash;
+    <span id="footerPoweredText">powered by <a href="https://github.com/CodeHedge/Adafruit_WebSerial_ESPTool">Adafruit WebSerial ESPTool</a></span>  <i class="fas fa-flask"></i>
   </div>
   <div class="controls">
-    
-   
-
+    <a id="switchProduct" href="#" style="color: #4A90E2; text-decoration: none; font-size: 13px;"><i class="fas fa-exchange-alt"></i> Switch Device</a>
   </div>
 </footer>
     </div>
