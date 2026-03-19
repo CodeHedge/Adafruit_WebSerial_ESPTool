@@ -65,15 +65,21 @@ function initializeProduct(product) {
 
     // Update footer
     const footerRepoLink = document.getElementById('footerRepoLink');
-    if (footerRepoLink) {
-        footerRepoLink.href = config.footerLink;
-        footerRepoLink.textContent = config.footerLinkText;
-    }
     const footerPoweredText = document.getElementById('footerPoweredText');
-    if (footerPoweredText) {
-        if (product === 'biscuit') {
-            footerPoweredText.innerHTML = config.footerText;
-        } else {
+    if (product === 'biscuit') {
+        if (footerRepoLink) {
+            footerRepoLink.href = 'https://patreon.com/therealhedge';
+            footerRepoLink.textContent = 'Support on Patreon';
+            footerRepoLink.style.display = '';
+        }
+        if (footerPoweredText) footerPoweredText.innerHTML = config.footerText;
+    } else {
+        if (footerRepoLink) {
+            footerRepoLink.style.display = '';
+            footerRepoLink.href = config.footerLink;
+            footerRepoLink.textContent = config.footerLinkText;
+        }
+        if (footerPoweredText) {
             footerPoweredText.innerHTML = 'powered by <a href="https://github.com/CodeHedge/Adafruit_WebSerial_ESPTool">Adafruit WebSerial ESPTool</a>';
         }
     }
