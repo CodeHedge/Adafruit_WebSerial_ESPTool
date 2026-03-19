@@ -149,6 +149,17 @@ const ESP32H2_SPI_MISO_DLEN_OFFS = 0x28;
 const ESP32H2_SPI_W0_OFFS = 0x58;
 const ESP32H2_UART_DATE_REG_ADDR = 0x6000007c;
 const ESP32H2_BOOTLOADER_FLASH_OFFSET = 0x0;
+const ESP32C5_SPI_REG_BASE = 0x60003000;
+const ESP32C5_BASEFUSEADDR = 0x600b4800;
+const ESP32C5_MACFUSEADDR = 0x600b4800 + 0x044;
+const ESP32C5_SPI_USR_OFFS = 0x18;
+const ESP32C5_SPI_USR1_OFFS = 0x1c;
+const ESP32C5_SPI_USR2_OFFS = 0x20;
+const ESP32C5_SPI_MOSI_DLEN_OFFS = 0x24;
+const ESP32C5_SPI_MISO_DLEN_OFFS = 0x28;
+const ESP32C5_SPI_W0_OFFS = 0x58;
+const ESP32C5_UART_DATE_REG_ADDR = 0x6000007c;
+const ESP32C5_BOOTLOADER_FLASH_OFFSET = 0x2000;
 const SYNC_PACKET = toByteArray("\x07\x07\x12 UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
 const CHIP_DETECT_MAGIC_REG_ADDR = 0x40001000;
 // These values for the families are made up; nothing that esptool uses.
@@ -158,6 +169,7 @@ const CHIP_FAMILY_ESP32S2 = 0x3252;
 const CHIP_FAMILY_ESP32S3 = 0x3253;
 const CHIP_FAMILY_ESP32C2 = 0x32c2;
 const CHIP_FAMILY_ESP32C3 = 0x32c3;
+const CHIP_FAMILY_ESP32C5 = 0x32c5;
 const CHIP_FAMILY_ESP32C6 = 0x32c6;
 const CHIP_FAMILY_ESP32H2 = 0x3272;
 const CHIP_DETECT_MAGIC_VALUES = {
@@ -171,6 +183,7 @@ const CHIP_DETECT_MAGIC_VALUES = {
     0x6921506f: { name: "ESP32-C3", family: CHIP_FAMILY_ESP32C3 },
     0x1b31506f: { name: "ESP32-C3", family: CHIP_FAMILY_ESP32C3 },
     0xd7b73e80: { name: "ESP32-H2", family: CHIP_FAMILY_ESP32H2 },
+    0x5fd1406f: { name: "ESP32-C5", family: CHIP_FAMILY_ESP32C5 },
     0x0da1806f: { name: "ESP32-C6(beta)", family: CHIP_FAMILY_ESP32C6 },
     0x2ce0806f: { name: "ESP32-C6", family: CHIP_FAMILY_ESP32C6 },
 };
@@ -297,6 +310,20 @@ const getSpiFlashAddresses = (chipFamily) => {
                 uartDateReg: ESP32C3_UART_DATE_REG_ADDR,
                 flashOffs: ESP32C3_BOOTLOADER_FLASH_OFFSET,
             };
+        case CHIP_FAMILY_ESP32C5:
+            return {
+                regBase: ESP32C5_SPI_REG_BASE,
+                baseFuse: ESP32C5_BASEFUSEADDR,
+                macFuse: ESP32C5_MACFUSEADDR,
+                usrOffs: ESP32C5_SPI_USR_OFFS,
+                usr1Offs: ESP32C5_SPI_USR1_OFFS,
+                usr2Offs: ESP32C5_SPI_USR2_OFFS,
+                mosiDlenOffs: ESP32C5_SPI_MOSI_DLEN_OFFS,
+                misoDlenOffs: ESP32C5_SPI_MISO_DLEN_OFFS,
+                w0Offs: ESP32C5_SPI_W0_OFFS,
+                uartDateReg: ESP32C5_UART_DATE_REG_ADDR,
+                flashOffs: ESP32C5_BOOTLOADER_FLASH_OFFSET,
+            };
         case CHIP_FAMILY_ESP32C6:
             return {
                 regBase: ESP32C6_SPI_REG_BASE,
@@ -367,6 +394,9 @@ const getStubCode = async (chipFamily) => {
     }
     else if (chipFamily == CHIP_FAMILY_ESP32C3) {
         stubcode = await import('./esp32c3-BluOfCkW.js');
+    }
+    else if (chipFamily == CHIP_FAMILY_ESP32C5) {
+        stubcode = await import('./esp32c5-aYxTDRfA.js');
     }
     else if (chipFamily == CHIP_FAMILY_ESP32C6) {
         stubcode = await import('./esp32c6-Gdu_fGNu.js');
@@ -7420,6 +7450,7 @@ class ESPLoader extends EventTarget {
             this.chipFamily == CHIP_FAMILY_ESP32S3 ||
             this.chipFamily == CHIP_FAMILY_ESP32C2 ||
             this.chipFamily == CHIP_FAMILY_ESP32C3 ||
+            this.chipFamily == CHIP_FAMILY_ESP32C5 ||
             this.chipFamily == CHIP_FAMILY_ESP32C6 ||
             this.chipFamily == CHIP_FAMILY_ESP32H2) {
             macAddr[0] = (mac1 >> 8) & 0xff;
@@ -7466,6 +7497,7 @@ class ESPLoader extends EventTarget {
             CHIP_FAMILY_ESP32S3,
             CHIP_FAMILY_ESP32C2,
             CHIP_FAMILY_ESP32C3,
+            CHIP_FAMILY_ESP32C5,
             CHIP_FAMILY_ESP32C6,
             CHIP_FAMILY_ESP32H2,
         ].includes(this.chipFamily)) {
@@ -7823,6 +7855,7 @@ class ESPLoader extends EventTarget {
                 CHIP_FAMILY_ESP32S3,
                 CHIP_FAMILY_ESP32C2,
                 CHIP_FAMILY_ESP32C3,
+                CHIP_FAMILY_ESP32C5,
                 CHIP_FAMILY_ESP32C6,
                 CHIP_FAMILY_ESP32H2,
             ].includes(this.chipFamily)) {
@@ -7849,6 +7882,7 @@ class ESPLoader extends EventTarget {
             this.chipFamily == CHIP_FAMILY_ESP32S3 ||
             this.chipFamily == CHIP_FAMILY_ESP32C2 ||
             this.chipFamily == CHIP_FAMILY_ESP32C3 ||
+            this.chipFamily == CHIP_FAMILY_ESP32C5 ||
             this.chipFamily == CHIP_FAMILY_ESP32C6 ||
             this.chipFamily == CHIP_FAMILY_ESP32H2) {
             buffer = buffer.concat(pack("<I", encrypted ? 1 : 0));

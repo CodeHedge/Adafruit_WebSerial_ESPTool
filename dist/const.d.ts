@@ -122,6 +122,17 @@ export declare const ESP32H2_SPI_MISO_DLEN_OFFS = 40;
 export declare const ESP32H2_SPI_W0_OFFS = 88;
 export declare const ESP32H2_UART_DATE_REG_ADDR = 1610612860;
 export declare const ESP32H2_BOOTLOADER_FLASH_OFFSET = 0;
+export declare const ESP32C5_SPI_REG_BASE = 1610625024;
+export declare const ESP32C5_BASEFUSEADDR = 1611352064;
+export declare const ESP32C5_MACFUSEADDR: number;
+export declare const ESP32C5_SPI_USR_OFFS = 24;
+export declare const ESP32C5_SPI_USR1_OFFS = 28;
+export declare const ESP32C5_SPI_USR2_OFFS = 32;
+export declare const ESP32C5_SPI_MOSI_DLEN_OFFS = 36;
+export declare const ESP32C5_SPI_MISO_DLEN_OFFS = 40;
+export declare const ESP32C5_SPI_W0_OFFS = 88;
+export declare const ESP32C5_UART_DATE_REG_ADDR = 1610612860;
+export declare const ESP32C5_BOOTLOADER_FLASH_OFFSET = 8192;
 export interface SpiFlashAddresses {
     regBase: number;
     baseFuse: number;
@@ -143,9 +154,10 @@ export declare const CHIP_FAMILY_ESP32S2 = 12882;
 export declare const CHIP_FAMILY_ESP32S3 = 12883;
 export declare const CHIP_FAMILY_ESP32C2 = 12994;
 export declare const CHIP_FAMILY_ESP32C3 = 12995;
+export declare const CHIP_FAMILY_ESP32C5 = 12997;
 export declare const CHIP_FAMILY_ESP32C6 = 12998;
 export declare const CHIP_FAMILY_ESP32H2 = 12914;
-export type ChipFamily = typeof CHIP_FAMILY_ESP8266 | typeof CHIP_FAMILY_ESP32 | typeof CHIP_FAMILY_ESP32S2 | typeof CHIP_FAMILY_ESP32S3 | typeof CHIP_FAMILY_ESP32C2 | typeof CHIP_FAMILY_ESP32C3 | typeof CHIP_FAMILY_ESP32C6 | typeof CHIP_FAMILY_ESP32H2;
+export type ChipFamily = typeof CHIP_FAMILY_ESP8266 | typeof CHIP_FAMILY_ESP32 | typeof CHIP_FAMILY_ESP32S2 | typeof CHIP_FAMILY_ESP32S3 | typeof CHIP_FAMILY_ESP32C2 | typeof CHIP_FAMILY_ESP32C3 | typeof CHIP_FAMILY_ESP32C5 | typeof CHIP_FAMILY_ESP32C6 | typeof CHIP_FAMILY_ESP32H2;
 interface ChipInfo {
     [magicValue: number]: {
         name: string;

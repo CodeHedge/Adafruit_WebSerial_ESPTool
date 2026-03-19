@@ -56,10 +56,6 @@ function initializeProduct(product) {
     // Update page title
     document.title = config.title;
 
-    // Update header logo
-    const headerLogo = document.getElementById('headerLogo');
-    if (headerLogo) headerLogo.src = config.logo;
-
     // Update header gradient
     const mainHeader = document.getElementById('mainHeader');
     if (mainHeader) {
