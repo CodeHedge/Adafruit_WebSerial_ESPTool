@@ -5,8 +5,9 @@ import terser from "@rollup/plugin-terser";
 const config = {
   input: "dist/index.js",
   output: {
-    dir: "dist/web",
+    file: "dist/web/index.js",
     format: "module",
+    inlineDynamicImports: true,
   },
   // preserveEntrySignatures: false,
   plugins: [nodeResolve(), json()],
