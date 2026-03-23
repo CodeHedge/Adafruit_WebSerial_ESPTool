@@ -2,16 +2,42 @@
   "product": "biscuit",
   "devices": [
     {
-      "id": "BISCUIT_DIY_C5",
-      "name": "Biscuit DIY (ESP32-C5)",
+      "id": "BISCUIT_DIY_C5DEV",
+      "name": "Biscuit DIY - C5 Dev Board",
       "group": "Biscuit DIY",
       "chip": "ESP32-C5",
       "version": "1.3.50",
       "offsets": [8192, 32768, 65536],
       "files": {
-        "bootloader": "resources/BISCUIT/CURRENT/biscuit_diy_c5_bootloader.bin",
-        "partitions": "resources/BISCUIT/CURRENT/biscuit_diy_c5_partitions.bin",
-        "firmware": "resources/BISCUIT/CURRENT/biscuit_diy_c5.bin"
+        "bootloader": "resources/BISCUIT/CURRENT/biscuit_diy_c5dev_bootloader.bin",
+        "partitions": "resources/BISCUIT/CURRENT/biscuit_diy_c5dev_partitions.bin",
+        "firmware": "resources/BISCUIT/CURRENT/biscuit_diy_c5dev.bin"
+      }
+    },
+    {
+      "id": "BISCUIT_DIY_XIAO",
+      "name": "Biscuit DIY - XIAO ESP32-C5",
+      "group": "Biscuit DIY",
+      "chip": "ESP32-C5",
+      "version": "1.3.50",
+      "offsets": [8192, 32768, 65536],
+      "files": {
+        "bootloader": "resources/BISCUIT/CURRENT/biscuit_diy_xiao_bootloader.bin",
+        "partitions": "resources/BISCUIT/CURRENT/biscuit_diy_xiao_partitions.bin",
+        "firmware": "resources/BISCUIT/CURRENT/biscuit_diy_xiao.bin"
+      }
+    },
+    {
+      "id": "BISCUIT_DIY_TDONGLE",
+      "name": "Biscuit DIY - T-Dongle",
+      "group": "Biscuit DIY",
+      "chip": "ESP32-C5",
+      "version": "1.3.50",
+      "offsets": [8192, 32768, 65536],
+      "files": {
+        "bootloader": "resources/BISCUIT/CURRENT/biscuit_diy_tdongle_bootloader.bin",
+        "partitions": "resources/BISCUIT/CURRENT/biscuit_diy_tdongle_partitions.bin",
+        "firmware": "resources/BISCUIT/CURRENT/biscuit_diy_tdongle.bin"
       }
     },
     {
