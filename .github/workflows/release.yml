@@ -1,0 +1,104 @@
+name: Create Firmware Release
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'resources/BISCUIT/CURRENT/**'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Firmware Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract Version and Build Release Notes
+        id: info
+        run: |
+          MANIFEST="resources/BISCUIT/CURRENT/manifest.json"
+
+          # Extract version info from manifest
+          python3 << 'PYEOF'
+          import json, os
+
+          with open("resources/BISCUIT/CURRENT/manifest.json") as f:
+              m = json.load(f)
+
+          devices = m["devices"]
+
+          # Use the first DIY device version as the primary release version
+          primary_version = devices[0]["version"]
+
+          # Build release body
+          lines = []
+          lines.append("## Firmware Files\n")
+          lines.append("| Device | Chip | Version | Bootloader | Partitions | Firmware |")
+          lines.append("|--------|------|---------|------------|------------|----------|")
+
+          for d in devices:
+              offsets = d["offsets"]
+              lines.append(
+                  f"| {d['name']} | {d['chip']} | {d['version']} "
+                  f"| `0x{offsets[0]:04X}` | `0x{offsets[1]:04X}` | `0x{offsets[2]:05X}` |"
+              )
+
+          lines.append("")
+          lines.append("## Flash Offsets\n")
+          lines.append("| Component | Offset (hex) | Offset (dec) |")
+          lines.append("|-----------|-------------|--------------|")
+          lines.append("| Bootloader | `0x2000` | 8192 |")
+          lines.append("| Partition Table | `0x8000` | 32768 |")
+          lines.append("| Application | `0x10000` | 65536 |")
+
+          lines.append("")
+          lines.append("## Included Binaries\n")
+          for d in devices:
+              lines.append(f"**{d['name']}** — v{d['version']}")
+              for ftype, fpath in d["files"].items():
+                  fname = fpath.split("/")[-1]
+                  lines.append(f"- `{fname}` ({ftype})")
+              lines.append("")
+
+          lines.append("---")
+          lines.append("Flash using the [Biscuit WebFlasher](https://codehedge.github.io/Adafruit_WebSerial_ESPTool/).")
+
+          body = "\n".join(lines)
+
+          with open("release_body.md", "w") as f:
+              f.write(body)
+
+          # Write outputs
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"version={primary_version}\n")
+          PYEOF
+
+      - name: Collect Firmware Binaries
+        run: |
+          mkdir -p release_assets
+          cp resources/BISCUIT/CURRENT/*.bin release_assets/
+
+      - name: Delete Existing Release (if same version)
+        run: |
+          TAG="v${{ steps.info.outputs.version }}"
+          gh release delete "$TAG" --yes 2>/dev/null || true
+          git push origin --delete "refs/tags/$TAG" 2>/dev/null || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.info.outputs.version }}
+          name: Biscuit Firmware v${{ steps.info.outputs.version }}
+          body_path: release_body.md
+          draft: false
+          prerelease: false
+          files: release_assets/*.bin
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
