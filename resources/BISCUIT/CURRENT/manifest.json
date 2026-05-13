@@ -91,7 +91,7 @@
       "name": "Biscuit Node (ESP32-C5)",
       "group": "Biscuit Node",
       "chip": "ESP32-C5",
-      "version": "1.2.5",
+      "version": "1.2.6",
       "offsets": [
         8192,
         32768,
