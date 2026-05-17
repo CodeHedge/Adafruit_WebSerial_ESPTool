@@ -65,7 +65,7 @@ jobs:
               lines.append("")
 
           lines.append("---")
-          lines.append("Flash using the [Biscuit WebFlasher](https://codehedge.github.io/Adafruit_WebSerial_ESPTool/).")
+          lines.append("Flash using the [Biscuit WebFlasher](https://codehedge.github.io/diy_node_web_flasher/).")
 
           body = "\n".join(lines)
 
