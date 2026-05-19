@@ -55,6 +55,20 @@ const DETECTED_FLASH_SIZES = {
     0x18: "16MB",
     0x19: "32MB",
     0x1a: "64MB",
+    0x1b: "128MB",
+    0x1c: "256MB",
+    0x20: "64MB",
+    0x21: "128MB",
+    0x22: "256MB",
+    0x32: "256KB",
+    0x33: "512KB",
+    0x34: "1MB",
+    0x35: "2MB",
+    0x36: "4MB",
+    0x37: "8MB",
+    0x38: "16MB",
+    0x39: "32MB",
+    0x3a: "64MB",
 };
 const FLASH_WRITE_SIZE = 0x400;
 const STUB_FLASH_WRITE_SIZE = 0x4000;
@@ -186,6 +200,7 @@ const CHIP_DETECT_MAGIC_VALUES = {
     0x5fd1406f: { name: "ESP32-C5", family: CHIP_FAMILY_ESP32C5 },
     0x1101406f: { name: "ESP32-C5", family: CHIP_FAMILY_ESP32C5 },
     0x63e1406f: { name: "ESP32-C5", family: CHIP_FAMILY_ESP32C5 },
+    0x30e1706f: { name: "ESP32-C5", family: CHIP_FAMILY_ESP32C5 },
     0x0da1806f: { name: "ESP32-C6(beta)", family: CHIP_FAMILY_ESP32C6 },
     0x2ce0806f: { name: "ESP32-C6", family: CHIP_FAMILY_ESP32C6 },
 };
