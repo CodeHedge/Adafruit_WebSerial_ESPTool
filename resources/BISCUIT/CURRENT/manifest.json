@@ -6,7 +6,7 @@
       "name": "Biscuit DIY C5 Dev (ESP32-C5)",
       "group": "Biscuit DIY",
       "chip": "ESP32-C5",
-      "version": "1.4.1",
+      "version": "1.4.5",
       "offsets": [
         8192,
         32768,
@@ -23,7 +23,7 @@
       "name": "Biscuit DIY XIAO (ESP32-C5)",
       "group": "Biscuit DIY",
       "chip": "ESP32-C5",
-      "version": "1.4.1",
+      "version": "1.4.5",
       "offsets": [
         8192,
         32768,
@@ -40,7 +40,7 @@
       "name": "Biscuit DIY T-Dongle (ESP32-C5)",
       "group": "Biscuit DIY",
       "chip": "ESP32-C5",
-      "version": "1.4.1",
+      "version": "1.4.5",
       "offsets": [
         8192,
         32768,
@@ -57,7 +57,7 @@
       "name": "Biscuit DIY Waveshare (ESP32-C5)",
       "group": "Biscuit DIY",
       "chip": "ESP32-C5",
-      "version": "1.4.1",
+      "version": "1.4.5",
       "offsets": [
         8192,
         32768,
@@ -71,10 +71,10 @@
     },
     {
       "id": "AWOK_DUAL_C5",
-      "name": "AWOK Dual C5 (ESP32-C5)",
+      "name": "AWOK Dual C5 Touch (ESP32-C5)",
       "group": "AWOK",
       "chip": "ESP32-C5",
-      "version": "1.4.1",
+      "version": "1.4.5",
       "offsets": [
         8192,
         32768,
@@ -84,6 +84,23 @@
         "bootloader": "resources/BISCUIT/CURRENT/biscuit_awok_c5_bootloader.bin",
         "partitions": "resources/BISCUIT/CURRENT/biscuit_awok_c5_partitions.bin",
         "firmware": "resources/BISCUIT/CURRENT/biscuit_awok_c5.bin"
+      }
+    },
+    {
+      "id": "AWOK_DUAL_C5_MINI",
+      "name": "AWOK Dual C5 Mini (ESP32-C5)",
+      "group": "AWOK",
+      "chip": "ESP32-C5",
+      "version": "1.4.5",
+      "offsets": [
+        8192,
+        32768,
+        65536
+      ],
+      "files": {
+        "bootloader": "resources/BISCUIT/CURRENT/biscuit_awok-mini_c5_bootloader.bin",
+        "partitions": "resources/BISCUIT/CURRENT/biscuit_awok-mini_c5_partitions.bin",
+        "firmware": "resources/BISCUIT/CURRENT/biscuit_awok-mini_c5.bin"
       }
     },
     {
